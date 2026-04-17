@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Menu, X, FileText } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { Container } from "./Container";
+import { CommandPaletteTrigger } from "./CommandPalette";
 import { site } from "@/content/site";
 
 const navItems = [
@@ -64,6 +65,7 @@ export function Nav() {
           </div>
 
           <div className="hidden items-center gap-2 md:flex">
+            <CommandPaletteTrigger />
             <Link
               href="/resume"
               className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] px-3 py-1.5 text-sm text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-elev-2)] hover:text-[var(--text)]"

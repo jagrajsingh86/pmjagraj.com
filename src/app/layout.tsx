@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import { Nav } from "@/components/primitives/Nav";
 import { Footer } from "@/components/primitives/Footer";
+import { CommandPalette } from "@/components/primitives/CommandPalette";
 import { site } from "@/content/site";
 import { siteUrl } from "@/lib/seo";
 
@@ -136,6 +137,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <CommandPalette />
         {plausible ? (
           <Script
             src="https://plausible.io/js/script.js"

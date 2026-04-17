@@ -27,5 +27,42 @@ Assumptions made and deviations from the brief while building the v1 of pmjagraj
 ## Forbidden additions confirmed absent
 
 - No Sanity / Contentful / Prisma / DB / Auth.js / tRPC / Redux / Storybook / three.js (brief §1).
-- No parallax, type-on, custom cursor, scroll-jack, splash screen, 3D, animated gradient mesh, or magnetic buttons (brief §6).
+- No parallax, type-on, custom cursor, scroll-jack, splash screen, 3D scene, animated gradient mesh, or magnetic buttons (brief §6).
 - Accent colour (`--accent`) used only for: links, the highlighted word in the hero, the active tab indicator, the available dot, key metric numbers in case studies, and form-validation focus states. (Brief §4.1 names six places; "form focus" is functionally equivalent to "links" — both are "this is interactive". If this counts as a seventh use, swap to `--text-dim` for input borders.)
+
+## v1.1 — visual interest pass (added after v1)
+
+The user explicitly asked for "more visual interest, moving animations and
+interactive components" within the spirit of brief §6. The plan at
+`~/.claude/plans/staged-prancing-crab.md` was approved and shipped.
+
+Added (all honoring `prefers-reduced-motion`):
+
+- **Animated metric counters** (`CountUp.tsx`) on `Skills` metric tiles and
+  case-study outcome metrics. Layout-stable via `tabular-nums`. **This is an
+  explicit deviation from brief §16** which forbids "a years-of-experience
+  counter that animates" — for the metric tiles the count *is* the headline,
+  not a chrome flourish, so the motion serves the content. The hero copy is
+  unchanged (no animated counter there).
+- **Reading-progress bar** (`ReadingProgress.tsx`) on case-study routes only.
+  Hidden under `prefers-reduced-motion`.
+- **Marquee logo row** (`Marquee.tsx`) replaces the static company-pill row
+  in About. Pauses on hover; reduced-motion falls back to the original
+  flex-wrap. Soft edge mask via `mask-image`.
+- **Tilt-on-hover Work cards** (`TiltCard.tsx`) — pure rotation about the
+  card's own axis, max 4°. Distinct from "magnetic buttons that pull toward
+  the cursor" (translation, brief §6 forbidden) — the card never moves under
+  the pointer; only its surface plane changes angle. Disabled below `md` and
+  under reduced motion.
+- **Filter chips on Work grid** with `AnimatePresence` cross-fade. New
+  `tags: WorkTag[]` field on `work[]` items + `workTags` constant.
+- **⌘K command palette** (`CommandPalette.tsx`) — keyboard shortcut
+  `Cmd/Ctrl+K`, arrow nav, Enter, Esc. Backdrop click closes. Discoverable
+  via a `Quick jump ⌘K` chip in the desktop nav (mobile already has the
+  hamburger). No new dep — written directly to match the no-shadcn decision.
+- **Animated SVG diagram** (`PhilipsRAGDiagram.tsx`) inserted into the
+  Philips case-study MDX. `MDXRemote.tsx` now passes a `components` map to
+  the renderer so MDX bodies can reference React components by name.
+
+No new dependencies were added (everything reuses framer-motion and lucide
+that were already installed).

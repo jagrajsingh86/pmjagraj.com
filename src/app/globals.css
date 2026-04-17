@@ -219,3 +219,22 @@ nav[data-scrolled="true"] {
   border-bottom: 1px solid var(--border);
   background: color-mix(in srgb, var(--bg) 92%, transparent);
 }
+
+/* Marquee — translates -50% so the duplicated track meets seamlessly */
+@keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* Pause SMIL animations when the user prefers reduced motion. The reduced-
+ * motion block at the top already covers CSS animations; SVG <animateMotion>
+ * needs explicit handling. */
+@media (prefers-reduced-motion: reduce) {
+  .philips-rag-packet animateMotion {
+    display: none;
+  }
+}

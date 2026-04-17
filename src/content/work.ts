@@ -1,4 +1,4 @@
-import type { CompanyMark, WorkCard } from "./types";
+import type { CompanyMark, WorkCard, WorkTag } from "./types";
 
 export const work: WorkCard[] = [
   {
@@ -9,6 +9,7 @@ export const work: WorkCard[] = [
     outcome:
       "An Azure AI Foundry RAG pipeline migrated thousands of QlikSense reports to PySpark — 80% less effort per conversion.",
     chips: ["Azure AI Foundry", "RAG", "Python"],
+    tags: ["AI", "Data"],
     status: "live",
   },
   {
@@ -19,6 +20,7 @@ export const work: WorkCard[] = [
     outcome:
       "First-market Salesforce + CPQ rollout for Volvo Cars India: from low-probability go-live to +50% YoY sales volume.",
     chips: ["Salesforce", "CPQ", "Change Management"],
+    tags: ["Salesforce", "Delivery"],
     status: "stub",
   },
   {
@@ -29,6 +31,7 @@ export const work: WorkCard[] = [
     outcome:
       "Hybrid waterfall/agile MDM delivery: 30% fewer data inconsistencies and 30% faster go-to-market.",
     chips: ["Stibo MDM", "Data Governance", "Hybrid Delivery"],
+    tags: ["Data", "Delivery"],
     status: "stub",
   },
   {
@@ -39,9 +42,13 @@ export const work: WorkCard[] = [
     outcome:
       "ABAP-on-HANA migration of the full GRC product suite, live to Siemens, Rolls-Royce, Airbus, Pratt & Whitney, NBC Universal, and Serco.",
     chips: ["SAP", "ABAP/HANA", "Release Management"],
+    tags: ["SAP"],
     status: "stub",
   },
 ];
+
+/** Filter chips shown above the Work grid, in display order. */
+export const workTags: WorkTag[] = ["AI", "Data", "Salesforce", "SAP", "Delivery"];
 
 export const companyMarks: CompanyMark[] = [
   { name: "Cognizant" },

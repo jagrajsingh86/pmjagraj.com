@@ -27,6 +27,8 @@ The ask, on paper, was "build a transpiler from QlikSense expressions to PySpark
 
 ## Approach
 
+<PhilipsRAGDiagram />
+
 The architecture had four moving parts:
 
 1. **Ingest & chunking.** A custom loader that took the `.qvf` / `.qvs` artefacts and emitted typed chunks per construct (load script, master items, sheets, expressions). Generic text splitters were a bad fit — preserving the construct boundary mattered more than chunk size.

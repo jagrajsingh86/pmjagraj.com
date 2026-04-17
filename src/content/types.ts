@@ -55,6 +55,8 @@ export interface CompanyMark {
   logo?: string;
 }
 
+export type WorkTag = "AI" | "Data" | "Salesforce" | "SAP" | "Delivery";
+
 export interface WorkCard {
   slug: string;
   client: string;
@@ -62,6 +64,7 @@ export interface WorkCard {
   title: string;
   outcome: string;
   chips: string[];
+  tags: WorkTag[];
   status: "live" | "stub";
 }
 

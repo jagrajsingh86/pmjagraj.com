@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Section } from "@/components/primitives/Section";
 import { CompanyLogoRow } from "@/components/primitives/CompanyLogoRow";
 import { companyMarks } from "@/content/work";
@@ -45,17 +46,14 @@ export function About() {
 
         <div className="md:col-span-5">
           <figure className="overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--bg-elev-1)]">
-            <div
-              aria-hidden="true"
-              className="flex aspect-square w-full items-center justify-center bg-[radial-gradient(circle_at_30%_30%,var(--bg-elev-2),var(--bg-elev-1))]"
-            >
-              <span className="font-serif text-[120px] text-[var(--text-dim)] italic">
-                {site.monogram}
-              </span>
-            </div>
-            <figcaption className="border-t border-[var(--border)] px-4 py-3 font-mono text-[11px] tracking-[0.18em] text-[var(--text-dim)] uppercase">
-              Photo coming soon — placeholder monogram
-            </figcaption>
+            <Image
+              src="/about/jagraj.jpg"
+              alt={`${site.name} — head-and-shoulders portrait`}
+              width={600}
+              height={600}
+              priority
+              className="aspect-square w-full object-cover"
+            />
           </figure>
         </div>
       </div>

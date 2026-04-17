@@ -1,0 +1,55 @@
+---
+title: "Cutting 80% of code conversion work with a RAG pipeline"
+client: "Philips"
+role: "Principal AI Consultant / Solution Architect"
+timeframe: "2023 – 2025"
+stack: ["Azure AI Foundry", "Python", "Vector DB", "RAG", "Databricks"]
+outcome_headline: "80% reduction in QlikSense-to-PySpark conversion effort"
+outcome_metrics:
+  - label: "Effort reduced"
+    value: "80%"
+  - label: "Reports migrated"
+    value: "1000s"
+  - label: "Dashboards"
+    value: "100s"
+  - label: "Engineers trained"
+    value: "50+"
+status: "live"
+---
+
+## Context
+
+Philips had thousands of QlikSense reports and hundreds of dashboards that needed to land on a modern PySpark + Databricks footprint. The reasons were the usual ones — licence cost, vendor consolidation, and the long-running data-platform programme that wanted everything on the same plane. But with that many artefacts and a small core engineering team, hand-conversion would have eaten 18+ months of headcount before producing a single business outcome. The team needed a way to compress conversion effort by an order of magnitude without compromising the trust analysts had in the numbers.
+
+## The problem, framed
+
+The ask, on paper, was "build a transpiler from QlikSense expressions to PySpark." The actual problem was different. QlikSense logic isn't only in the expressions — it's in the load script, the master measures, the section access, and an enormous amount of implicit business knowledge baked into chart-level set analysis. Any conversion that ignored those layers would produce code that compiled but disagreed with the original numbers — and that's the worst outcome. So the project goal got reframed: build a **RAG-grounded conversion pipeline** that could read the original artefact in full context (expressions, load script, dimension model, prior conversions of similar reports) and emit PySpark a human engineer would be willing to sign off.
+
+## Approach
+
+The architecture had four moving parts:
+
+1. **Ingest & chunking.** A custom loader that took the `.qvf` / `.qvs` artefacts and emitted typed chunks per construct (load script, master items, sheets, expressions). Generic text splitters were a bad fit — preserving the construct boundary mattered more than chunk size.
+2. **Vector index of prior conversions.** Every signed-off conversion fed back into a vector store, so the next conversion of a similar report had high-quality grounded examples. This is where the curve flattened — early conversions took hours of review, later ones were 10–15 minutes.
+3. **Generation with a Foundry-hosted model.** We chose **Azure AI Foundry** over hosted OpenAI for two reasons: data residency requirements that ruled out external endpoints, and the operational benefits of running the model alongside the Databricks workspace. Embedding model and base LLM both lived in the same tenant.
+4. **Deterministic eval harness.** A run-the-original / run-the-converted / diff-the-results harness on a sampled dataset. The pipeline would not promote a conversion to "ready for review" until the eval passed against a tolerance the data team agreed in writing. **No tolerance, no eval, no merge.**
+
+The two interesting design calls were (a) putting the eval harness in the inner loop (not as a separate QA step), which meant the model's own retries had access to the diff and could iterate; and (b) building a small, opinionated CLI for engineers — `convert <report-id>` — so the pipeline felt like a tool, not a product.
+
+## What shipped
+
+- A production conversion pipeline running on Databricks, scheduled and idempotent, with full lineage from source `.qvf` to converted notebook.
+- A vector store of every signed-off conversion, used to ground subsequent runs and to power a "find me a similar report" lookup for the engineering team.
+- An eval harness that produces a per-report PASS / FAIL with the underlying numeric diff, attached to the PR.
+- A 50+ engineer training programme covering the pipeline, prompt engineering, and how to debug a borderline conversion.
+- An overall **80% reduction in conversion effort** measured against the pre-pipeline baseline, across thousands of reports and hundreds of dashboards.
+
+## What I'd do differently
+
+- **Invest in the eval harness on day one, not month two.** Every week we ran without the diff harness was a week of slower review cycles and softer trust. We caught up, but the eval should have been the first commit, not the third.
+- **Be more aggressive about pruning the long-tail dashboards.** Maybe a quarter of the dashboards weren't being opened. We converted them anyway because that was the contract. Next time I would push harder for a usage cull before the conversion, not after.
+- **Write the engineer-facing CLI sooner.** Engineers adopted the tool the day the CLI shipped. Before that, they were copy-pasting prompts. The CLI was a one-week effort; we did it in month three. Should have been month one.
+
+## Credits
+
+Engineering, data, and platform partners at Philips, plus the Cognizant delivery team across Sydney, Bangalore, and Eindhoven. Names withheld by client request — happy to provide references on enquiry.

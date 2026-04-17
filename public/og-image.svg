@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0a0a0b"/>
+  <g transform="translate(80, 80)">
+    <rect width="64" height="64" rx="12" fill="#121215" stroke="#2a2a30"/>
+    <text x="32" y="32" dominant-baseline="central" text-anchor="middle"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+          font-size="22" font-weight="600" fill="#ededf0">JS</text>
+  </g>
+  <text x="80" y="320" font-family="Inter, system-ui, sans-serif"
+        font-size="68" font-weight="700" fill="#ededf0" letter-spacing="-1.5">
+    Jagraj Singh
+  </text>
+  <text x="80" y="380" font-family="Inter, system-ui, sans-serif"
+        font-size="32" font-weight="400" fill="#8a8a95" letter-spacing="-0.3">
+    Principal AI Consultant &amp; Solution Architect
+  </text>
+  <text x="80" y="540" font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+        font-size="20" fill="#7dd3fc" letter-spacing="0.5">
+    Sydney, Australia · pmjagraj.com
+  </text>
+</svg>

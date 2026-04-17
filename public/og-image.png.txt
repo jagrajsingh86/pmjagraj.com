@@ -1,0 +1,2 @@
+Run `pnpm og:generate` to render the PNG from public/og-image.svg.
+The .svg version above is the source of truth and works in most OG validators.

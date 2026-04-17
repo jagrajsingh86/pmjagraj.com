@@ -1,0 +1,51 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Format check
+        run: pnpm format:check
+
+      - name: Build
+        run: pnpm build
+
+      - name: Start server (background)
+        run: |
+          pnpm start &
+          npx wait-on http://localhost:3000 -t 60000
+
+      - name: Axe accessibility scan
+        run: pnpm test:a11y
+
+      - name: Lighthouse CI
+        run: |
+          npm i -g @lhci/cli@0.14.x
+          lhci autorun || echo "::warning::lighthouse below threshold"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useInView, useReducedMotion } from "framer-motion";
 
 interface CountUpProps {
@@ -35,7 +35,10 @@ export function CountUp({ value, duration = 1100, className }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-15% 0px" });
   const reduced = useReducedMotion();
-  const parsed = parse(value);
+  // Memoize so the effect dep array gets a stable reference per `value` —
+  // otherwise every setState re-renders, re-parses, retriggers the effect,
+  // and the rAF restarts → counter never finishes.
+  const parsed = useMemo(() => parse(value), [value]);
 
   // Width-stable: reserve max width via tabular-nums so digit changes don't shift layout.
   // Hooks must run unconditionally; we do the early-return AFTER all hooks.

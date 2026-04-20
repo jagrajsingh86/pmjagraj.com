@@ -52,6 +52,7 @@ export function About() {
               width={600}
               height={600}
               priority
+              unoptimized
               className="aspect-square w-full object-cover"
             />
           </figure>
